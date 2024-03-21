@@ -16,7 +16,7 @@ app.use(
   })
 );
 
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   return res.status(200).send({
