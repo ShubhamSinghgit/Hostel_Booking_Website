@@ -3,23 +3,17 @@ import Jwt from "jsonwebtoken";
 const isLogIn = async (req, res, next) => {
   try {
     const { token } = req.cookies;
-    // console.log(token);
-    if (token) {
-      const { id } = await Jwt.verify(token, process.env.SEC);
-      if (req.body.id !== id) {
-        return res.status(401).send({
-          success: false,
-          message: "Please Check your id",
-        });
-      }
-
-      return res.status(401).send({
+    if (!token) {
+      return res.status(400).send({
         success: false,
-        message: "You are already LogIn",
+        message: "You are not log in",
       });
     }
+    const decode = await Jwt.verify(token, process.env.SEC);
+    req.user = decode;
+    console.log(decode);
 
-    return next();
+    next();
   } catch (e) {
     console.log("Erroe is in IsLogIN part");
   }

@@ -6,7 +6,7 @@ import isToken from "../middlewares/isToken.js";
 const UserRoute = Router();
 
 UserRoute.post("/register", Register)
-  .post("/login", isLogIn, LogIn, isToken)
-  .get("/logout", LogOut);
+  .post("/user/login", LogIn)
+  .get("/logout", isLogIn, LogOut);
 
 export default UserRoute;
