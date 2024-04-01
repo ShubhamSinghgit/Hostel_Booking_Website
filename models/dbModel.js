@@ -18,9 +18,6 @@ const UserSchema = new mongoose.Schema(
     roomId: {
       type: Number,
     },
-    secret: {
-      type: String,
-    },
   },
   {
     timeStamp: true,
@@ -33,8 +30,8 @@ UserSchema.pre("save", async function () {
 
 UserSchema.methods = {
   JWT: function () {
-    const secretKey = crypto.randomBytes(32).toString("base64");
-    this.secret = secretKey;
+    // const secretKey = crypto.randomBytes(32).toString("base64");
+    // this.secret = secretKey;
     const token = Jwt.sign(
       {
         id: this.id,

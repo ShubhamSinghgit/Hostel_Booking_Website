@@ -1,5 +1,6 @@
 import UserModel from "../models/dbModel.js";
 import { CollageData } from "../CollageData.js";
+import bcrypt from "bcrypt";
 
 export const Register = async (req, res) => {
   try {
@@ -10,6 +11,7 @@ export const Register = async (req, res) => {
         message: "All fields are require",
       });
     }
+
     const collageStudent = CollageData.filter((e) => e.enrollmentNo === id);
     if (collageStudent.length === 0) {
       return res.status(401).send({
@@ -34,7 +36,7 @@ export const Register = async (req, res) => {
         httpOnly: true,
       });
 
-      return res.status(500).send({
+      return res.status(200).send({
         success: true,
         message: "User is successfully saved",
         data: {
@@ -58,14 +60,22 @@ export const Register = async (req, res) => {
 
 export const LogIn = async (req, res, next) => {
   try {
-    console.log(req.body);
     const { id, password } = req.body;
 
     const user = await UserModel.findOne({ id });
     if (!user) {
-      return res.status(500).send({
+      res.status(500).send({
         success: false,
         message: "User not Found",
+      });
+    }
+    const cheackPassword = await bcrypt.hash(password, user.password);
+    console.log(user.password);
+
+    if (!cheackPassword) {
+      return res.status(400).send({
+        success: false,
+        message: "Wrong Passsword",
       });
     }
     // user.select("+passwoed");
@@ -75,14 +85,15 @@ export const LogIn = async (req, res, next) => {
       httpOnly: true,
     });
 
+    user.password = undefined;
+
     res.status(200).send({
       success: true,
       message: "User is successfully log in",
       user,
-      token,
     });
 
-    next();
+    // next();
   } catch (err) {
     console.log("Error in LogIn Part", err);
     return res.status(400).send({
@@ -103,10 +114,11 @@ export const LogOut = async function (req, res) {
     }
     res.cookie("token", token, { maxAge: 0 });
 
-    return res.status(200).send({
+    res.status(304).send({
       success: true,
       message: "User is successfully signed out",
     });
+    // res.status(200);
   } catch (e) {
     console.log("Error in signOut part", e);
     return res.status(400).send({

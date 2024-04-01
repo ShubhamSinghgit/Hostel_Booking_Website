@@ -11,21 +11,22 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: "http://localhost:5173", //
+    credentials: true,
     HttpOnly: true,
   })
 );
 
-// app.use(morgan("dev"));
+app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-  return res.status(200).send({
-    success: true,
-    message: "Hello user you talk to a Server",
-  });
-});
+// app.get("/", (req, res) => {
+//   return res.status(200).send({
+//     success: true,
+//     message: "Hello user you talk to a Server",
+//   });
+// });
 
-app.use("/", UserRoute);
+app.use("/api/v1", UserRoute);
 
 app.use("*", (req, res) => {
   res.status(404).send("Opps!! Page Not Found");
