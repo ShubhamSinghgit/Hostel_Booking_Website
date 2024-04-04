@@ -1,7 +1,7 @@
-import UserModel from "../models/UserModel.js";
-import { CollageData } from "../CollageData.js";
+import AdminModel from "../models/AdminModel.js";
+import { AdminData } from "../AdminData.js";
 
-export const StudentRegister = async (req, res) => {
+export const AdminRegister = async (req, res) => {
   try {
     //Checking all fields from Frontend
     const { E_no, password } = req.body;
@@ -12,17 +12,17 @@ export const StudentRegister = async (req, res) => {
       });
     }
 
-    //Checking The Student is in our collage or not
-    const collageStudent = CollageData.filter((e) => e.enrollmentNo === E_no);
-    if (collageStudent.length === 0) {
+    //Checking The Admin is Registerd or not
+    const collageAdmin = AdminData.filter((e) => e.enrollmentNo === E_no);
+    if (collageAdmin.length === 0) {
       return res.status(401).send({
         success: true,
-        message: "You are not a collage student",
+        message: "You are not a collage Admin",
       });
     }
 
-    //Checking the student is already exist or not
-    const existUser = await UserModel.findOne({ E_no });
+    //Checking the Admin is already exist or not
+    const existUser = await AdminModel.findOne({ E_no });
     if (existUser) {
       return res.status(500).send({
         success: false,
@@ -30,19 +30,19 @@ export const StudentRegister = async (req, res) => {
       });
     }
 
-    //Register Student
-    const user = await new UserModel({
-      name: collageStudent[0].name,
-      email: collageStudent[0].email,
+    //Register Admin
+    const user = await new AdminModel({
+      name: collageAdmin[0].name,
+      email: collageAdmin[0].email,
       E_no,
       password,
-      ph_no: collageStudent[0].ph_no,
+      ph_no: collageAdmin[0].ph_no,
     });
     await user.save();
     if (!user) {
       return res.status(500).send({
         success: true,
-        message: "User data is not save",
+        message: "Admin data is not save",
       });
     }
     const token = await user.JWT();
@@ -53,7 +53,7 @@ export const StudentRegister = async (req, res) => {
 
     return res.status(200).send({
       success: true,
-      message: "User is successfully saved",
+      message: "Admin is successfully Registered",
       data: {
         user,
       },
@@ -67,17 +67,17 @@ export const StudentRegister = async (req, res) => {
   }
 };
 
-//Student Login
+//Admin Login
 
-export const StudentLogIn = async (req, res, next) => {
+export const AdminLogIn = async (req, res, next) => {
   try {
     const { E_no, password } = req.body;
 
-    const user = await UserModel.findOne({ E_no });
+    const user = await AdminModel.findOne({ E_no });
     if (!user) {
       return res.status(500).send({
         success: false,
-        message: "User not Found",
+        message: "Admin not Found",
       });
     }
     const isTrue = await user.comparePassword(password);
@@ -97,7 +97,7 @@ export const StudentLogIn = async (req, res, next) => {
 
     res.status(200).send({
       success: true,
-      message: "User is successfully log in",
+      message: "Admin is successfully log in",
       user,
     });
   } catch (err) {
@@ -109,9 +109,9 @@ export const StudentLogIn = async (req, res, next) => {
   }
 };
 
-//Student Logout
+//Admin Logout
 
-export const StudentLogOut = (req, res) => {
+export const AdminLogOut = (req, res) => {
   try {
     const token = req.cookies.token;
     if (!token) {
@@ -123,7 +123,7 @@ export const StudentLogOut = (req, res) => {
     res.cookie("token", token, { maxAge: 0 });
     return res.status(200).send({
       success: true,
-      message: "User is successfully signed out",
+      message: "Admin is successfully signed out",
     });
     // res.status(200);
   } catch (e) {

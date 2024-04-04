@@ -11,9 +11,8 @@ const isLogIn = async (req, res, next) => {
     }
     const decode = await Jwt.verify(token, process.env.SEC);
     req.user = decode;
-    console.log(decode);
 
-    next();
+    return next();
   } catch (e) {
     console.log("Erroe is in IsLogIN part");
   }

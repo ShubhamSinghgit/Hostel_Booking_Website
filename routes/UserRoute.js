@@ -1,12 +1,21 @@
 import { Router } from "express";
-import { LogIn, Register, LogOut } from "../controllers/User.controller.js";
+import {
+  StudentLogIn,
+  StudentRegister,
+  StudentLogOut,
+} from "../controllers/User.controller.js";
 import isLogIn from "../middlewares/isLogIn.js";
-import isToken from "../middlewares/isToken.js";
+import {
+  createComplain,
+  deleteComplain,
+} from "../controllers/Complain.controller.js";
 
 const UserRoute = Router();
 
-UserRoute.post("/register", Register)
-  .post("/user/login", LogIn)
-  .get("/logout", isLogIn, LogOut);
+UserRoute.post("/register", StudentRegister)
+  .post("/login", StudentLogIn)
+  .post("/complain/:id", isLogIn, createComplain)
+  .delete("/complain/:id/:c_id", isLogIn, deleteComplain)
+  .get("/logout", isLogIn, StudentLogOut);
 
 export default UserRoute;
