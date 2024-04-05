@@ -14,8 +14,6 @@ const UserRoute = Router();
 
 UserRoute.post("/register", StudentRegister)
   .post("/login", StudentLogIn)
-  .post("/complain/:id", isLogIn, createComplain)
-  .delete("/complain/:id/:c_id", isLogIn, deleteComplain)
   .get("/logout", isLogIn, StudentLogOut);
 
 export default UserRoute;

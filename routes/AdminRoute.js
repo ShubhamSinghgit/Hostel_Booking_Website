@@ -12,6 +12,6 @@ const AdminRoute = Router();
 AdminRoute.post("/register", AdminRegister)
   .post("/login", AdminLogIn)
   .get("/logout", isLogIn, AdminLogOut)
-  .get("/allcomplain", isLogIn, GetAllComplain);
+  .get("/allcomplain", GetAllComplain);
 
 export default AdminRoute;

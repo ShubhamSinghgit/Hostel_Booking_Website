@@ -131,3 +131,26 @@ export const deleteComplain = async (req, res, next) => {
     });
   }
 };
+
+export const GetComplain = async (id) => {
+  try {
+    const allComplaine = await ComplainModel.findOne({ E_no: id });
+    console.log(allComplaine);
+    if (!allComplaine) {
+      return {
+        success: false,
+        message: "Somthing Wrong on db",
+      };
+    }
+    return {
+      success: true,
+      allComplaine,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      success: false,
+      message: "Somthing Wrong on db",
+    };
+  }
+};

@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      // unique : true,
       minLength: [5, "min length is 5"],
       require: true,
     },
@@ -38,6 +39,16 @@ const UserSchema = new mongoose.Schema(
         },
       },
     },
+    complains: [
+      {
+        complain_type: {
+          type: String,
+        },
+        description: {
+          type: String,
+        },
+      },
+    ],
     ph_no: {
       type: String,
     },
@@ -70,6 +81,7 @@ UserSchema.methods = {
     return token;
   },
   comparePassword: async function (password) {
+    console.log(this.password);
     return await bcrypt.compare(password, this.password);
   },
 };

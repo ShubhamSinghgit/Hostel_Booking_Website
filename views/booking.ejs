@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       /* Navigation  */
+       .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #b046fb;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 10px;
+      }
+      .navigation a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 20px;
+      }
+      .navigation a:hover {
+        color: #ddd;
+      }
+      .logo img {
+        height: 4rem;
+        width: 6rem;
+        border-radius: 10px;
+      }
+      .column {
+        float: left;
+        width: 30%; 
+        margin: 1.5%;
+      }
+      .row::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+      .image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px; 
+        border-radius: 10px; 
+        transition: opacity 0.5s; 
+      }
+      .image:hover {
+        opacity: 0.5; 
+      }
+      .book-button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px; 
+        background-color: #4caf50; 
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+      }
+      .book-button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+    <nav class="navigation">
+        <div class="logo">
+          <img src="LOGO.jpeg" alt="Logo" />
+        </div>
+        <div>
+          <a href="http://localhost:5000/home">Home</a>
+          <a href="http://localhost:5000/about">About</a>
+          <a href="http://localhost:5000/contact">Contact</a>
+          <a href="http://localhost:5000/book">Booking</a>
+        </div>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="column">
+        <img
+          class="image"
+          src="https://t4.ftcdn.net/jpg/02/19/66/93/360_F_219669327_v12pBKc7TB62E3uCJrgRRkDhfVENK3z5.jpg"
+          alt="Image 1"
+        />
+        <button class="book-button" onclick="bookRoom(this)">Book</button>
+      </div>
+      <div class="column">
+        <img
+          class="image"
+          src="https://t4.ftcdn.net/jpg/02/19/66/93/360_F_219669327_v12pBKc7TB62E3uCJrgRRkDhfVENK3z5.jpg"
+          alt="Image 1"
+        />
+        <button class="book-button" onclick="bookRoom(this)">Book</button>
+      </div>
+      <div class="column">
+        <img
+          class="image"
+          src="https://t4.ftcdn.net/jpg/02/19/66/93/360_F_219669327_v12pBKc7TB62E3uCJrgRRkDhfVENK3z5.jpg"
+          alt="Image 1"
+        />
+        <button class="book-button" onclick="bookRoom(this)">Book</button>
+      </div>
+      <div class="column">
+        <img
+          class="image"
+          src="https://t4.ftcdn.net/jpg/02/19/66/93/360_F_219669327_v12pBKc7TB62E3uCJrgRRkDhfVENK3z5.jpg"
+          alt="Image 1"
+        />
+        <button class="book-button" onclick="bookRoom(this)">Book</button>
+      </div>
+      <div class="column">
+        <img
+          class="image"
+          src="https://t4.ftcdn.net/jpg/02/19/66/93/360_F_219669327_v12pBKc7TB62E3uCJrgRRkDhfVENK3z5.jpg"
+          alt="Image 1"
+        />
+        <button class="book-button" onclick="bookRoom(this)">Book</button>
+      </div>
+      <div class="column">
+        <img
+          class="image"
+          src="https://t4.ftcdn.net/jpg/02/19/66/93/360_F_219669327_v12pBKc7TB62E3uCJrgRRkDhfVENK3z5.jpg"
+          alt="Image 1"
+        />
+        <button class="book-button" onclick="bookRoom(this)">Book</button>
+      </div>
+      <div class="column">
+        <img
+          class="image"
+          src="https://t4.ftcdn.net/jpg/02/19/66/93/360_F_219669327_v12pBKc7TB62E3uCJrgRRkDhfVENK3z5.jpg"
+          alt="Image 1"
+        />
+        <button class="book-button" onclick="bookRoom(this)">Book</button>
+      </div>
+      <div class="column">
+        <img
+          class="image"
+          src="https://t4.ftcdn.net/jpg/02/19/66/93/360_F_219669327_v12pBKc7TB62E3uCJrgRRkDhfVENK3z5.jpg"
+          alt="Image 1"
+        />
+        <button class="book-button" onclick="bookRoom(this)">Book</button>
+      </div>
+      <div class="column">
+        <img
+          class="image"
+          src="https://t4.ftcdn.net/jpg/02/19/66/93/360_F_219669327_v12pBKc7TB62E3uCJrgRRkDhfVENK3z5.jpg"
+          alt="Image 1"
+        />
+        <button class="book-button" onclick="bookRoom(this)">Book</button>
+      </div>
+    </div>
+    <script>
+      function bookRoom(button) {
+        button.innerHTML = "Already booked this room";
+        button.disabled = true;
+        button.style.backgroundColor = "red"; 
+        alert("Your room is booked");
+      }
+    </script>
+  </body>
+</html>
+
