@@ -1,22 +1,49 @@
 import mongoose, { model, mongo } from "mongoose";
-import crypto from "crypto";
+
 import Jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 const UserSchema = new mongoose.Schema(
   {
-    id: {
+    name: {
+      type: String,
+      required: true,
+    },
+    E_no: {
       type: Number,
-      maxLength: [15, "length should be 15"],
+      minLength: [15, "minimum length is 15"],
       require: true,
       trim: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
-      maxLength: [5, "length should be 5"],
+      minLength: [5, "min length is 5"],
       require: true,
     },
-    roomId: {
+    room: {
       type: Number,
+      details: {
+        isBooked: {
+          type: Boolean,
+          default: false,
+        },
+        bookingDate: {
+          type: Date,
+        },
+        roomId: {
+          type: Number,
+        },
+      },
+    },
+    ph_no: {
+      type: String,
+    },
+    createAt: {
+      type: Date,
+      default: Date.now(),
     },
   },
   {
@@ -30,12 +57,10 @@ UserSchema.pre("save", async function () {
 
 UserSchema.methods = {
   JWT: function () {
-    // const secretKey = crypto.randomBytes(32).toString("base64");
-    // this.secret = secretKey;
     const token = Jwt.sign(
       {
-        id: this.id,
-        password: this.password,
+        id: this.E_no,
+        email: this.email,
       },
       process.env.SEC,
       {
@@ -43,6 +68,9 @@ UserSchema.methods = {
       }
     );
     return token;
+  },
+  comparePassword: async function (password) {
+    return await bcrypt.compare(password, this.password);
   },
 };
 

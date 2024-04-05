@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { config } from "dotenv";
 config();
-import UserRoute from "./routes/UserRoute.js";
+
 import morgan from "morgan";
 const app = express();
 app.use(express.json());
@@ -25,8 +25,11 @@ app.use(morgan("dev"));
 //     message: "Hello user you talk to a Server",
 //   });
 // });
+import UserRoute from "./routes/UserRoute.js";
+import AdminRoute from "./routes/AdminRoute.js";
 
-app.use("/api/v1", UserRoute);
+app.use("/", UserRoute);
+app.use("/admin", AdminRoute);
 
 app.use("*", (req, res) => {
   res.status(404).send("Opps!! Page Not Found");
