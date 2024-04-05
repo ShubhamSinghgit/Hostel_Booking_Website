@@ -1,36 +1,30 @@
 import UserModel from "../models/UserModel.js";
 import { CollageData } from "../CollageData.js";
 
+//Student Register
 export const StudentRegister = async (req, res) => {
   try {
-    //Checking all fields from Frontend
-    const { E_no, password } = req.body;
-    if (!E_no || !password) {
-      return res.status(400).send({
-        success: false,
-        message: "All fields are require",
-      });
+    const { E_no, password, cnf_password } = req.body;
+    if (!E_no || !password || !cnf_password) {
+      return res.render("error.ejs");
     }
 
-    //Checking The Student is in our collage or not
-    const collageStudent = CollageData.filter((e) => e.enrollmentNo === E_no);
+    if (password !== cnf_password) {
+      return res.render("error.ejs");
+    }
+    const id = Number(E_no);
+
+    const collageStudent = CollageData.filter((e) => e.enrollmentNo === id);
+
     if (collageStudent.length === 0) {
-      return res.status(401).send({
-        success: true,
-        message: "You are not a collage student",
-      });
+      return res.render("error.ejs");
     }
 
-    //Checking the student is already exist or not
-    const existUser = await UserModel.findOne({ E_no });
+    const existUser = await UserModel.findOne({ E_no: id });
     if (existUser) {
-      return res.status(500).send({
-        success: false,
-        message: "User Already existed",
-      });
+      return res.render("error.ejs");
     }
 
-    //Register Student
     const user = await new UserModel({
       name: collageStudent[0].name,
       email: collageStudent[0].email,
@@ -40,10 +34,7 @@ export const StudentRegister = async (req, res) => {
     });
     await user.save();
     if (!user) {
-      return res.status(500).send({
-        success: true,
-        message: "User data is not save",
-      });
+      return res.render("error.ejs");
     }
     const token = await user.JWT();
 
@@ -51,19 +42,12 @@ export const StudentRegister = async (req, res) => {
       httpOnly: true,
     });
 
-    return res.status(200).send({
-      success: true,
-      message: "User is successfully saved",
-      data: {
-        user,
-      },
+    const info = { success: true, data: user };
+    return res.render("viewpage.ejs", {
+      info,
     });
   } catch (e) {
-    res.status(400).send({
-      success: false,
-      message: "Sign in Server is Not Working",
-    });
-    console.log("Error in Register Part", e);
+    return res.render("error.ejs");
   }
 };
 
@@ -73,39 +57,37 @@ export const StudentLogIn = async (req, res, next) => {
   try {
     const { E_no, password } = req.body;
 
-    const user = await UserModel.findOne({ E_no });
+    if (!E_no || !password) {
+      return res.render("error.ejs");
+    }
+
+    const id = Number(E_no);
+
+    const user = await UserModel.findOne({ E_no: id });
+
     if (!user) {
-      return res.status(500).send({
-        success: false,
-        message: "User not Found",
-      });
+      return res.render("error.ejs");
     }
+
     const isTrue = await user.comparePassword(password);
-    if (!isTrue) {
-      return res.status(400).send({
-        success: false,
-        message: "Wrong Passsword",
-      });
+    if (isTrue === false) {
+      return res.render("error.ejs");
     }
+    // console.log(user);
 
     const token = await user.JWT();
     res.cookie("token", token, {
       httpOnly: true,
     });
 
-    user.password = undefined;
-
-    res.status(200).send({
-      success: true,
-      message: "User is successfully log in",
-      user,
+    const info = { success: true, data: user };
+    // console.log(info);
+    return res.render("viewpage.ejs", {
+      info,
     });
   } catch (err) {
     console.log("Error in LogIn Part", err);
-    return res.status(400).send({
-      success: false,
-      message: "LogIn Server is Not Working",
-    });
+    return res.render("error.ejs");
   }
 };
 
